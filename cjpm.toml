@@ -1,0 +1,17 @@
+[package]
+  cjc-version = "1.0.4"
+  name = "rayl"
+  description = "nothing here"
+  version = "1.0.0"
+  target-dir = ""
+  src-dir = ""
+  output-type = "executable"
+  compile-option = ""
+  override-compile-option = "-B /usr/lib/gcc/x86_64-redhat-linux/15/ -Llib/ -lraylib"
+  link-option = ""
+  [package.package-configuration]
+
+[dependencies]
+  [dependencies.cangjieraylib]
+    version = "1.0.0"
+    path = "/home/fenrave/Documents/cangjietest/rayl/dep/cangjie-raylib-raw-bindings"
