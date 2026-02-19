@@ -5,9 +5,9 @@ package rayl.system
 	All public structs were added recursively as I wrote out the functions, there might be some inconsistent formatting that needs to be rectified.
 	There may also be missing(?) public structs, but all of the ones that the functions depend on are in here.
 
-	public structs with proper initializers are ones I've "personally" deemed to be ones meant to be conpublic structed by the end user, as I didn't want to write out them all out.
-	Presently I am unaware of a better way to "quickly" initialize a public struct, as far as I can tell, ->
-	-> you're supposed to either turn them into a public function or just do the initializer thing.
+	public structs with proper public initializers are ones I've "personally" deemed to be ones meant to be conpublic structed by the end user, as I didn't want to write out them all out.
+	Presently I am unaware of a better way to "quickly" public initialize a public struct, as far as I can tell, ->
+	-> you're supposed to either turn them into a public function or just do the public initializer thing.
 
 */
 
@@ -18,7 +18,7 @@ package rayl.system
 	var b: UInt8 = 0
 	var a: UInt8 = 255
 
-	init(R: UInt8, G: UInt8, B: UInt8, A: UInt8) {
+	public init(R: UInt8, G: UInt8, B: UInt8, A: UInt8) {
 		r = R
 		g = G
 		b = B
@@ -32,7 +32,7 @@ package rayl.system
 	var width: Float32 = 0.0
 	var height: Float32 = 0.0
 
-	init(X: Float32, Y: Float32, Width: Float32, Height: Float32) {
+	public init(X: Float32, Y: Float32, Width: Float32, Height: Float32) {
 		x = X
 		y = Y
 		width = Width
@@ -44,7 +44,7 @@ package rayl.system
 	var x: Float32 = 0.0
 	var y: Float32 = 0.0
 
-	init(X: Float32, Y: Float32) {
+	public init(X: Float32, Y: Float32) {
 		x = X
 		y = Y
 	}
@@ -54,7 +54,7 @@ package rayl.system
 	var x: Float32 = 0.0
 	var y: Float32 = 0.0
 	var z: Float32 = 0.0
-	init(X: Float32, Y: Float32, Z: Float32) {
+	public init(X: Float32, Y: Float32, Z: Float32) {
 		x = X
 		y = Y
 		z = Z
@@ -66,7 +66,7 @@ package rayl.system
 	var y: Float32 = 0.0
 	var z: Float32 = 0.0
 	var w: Float32 = 0.0
-	init(X: Float32, Y: Float32, Z: Float32, W: Float32) {
+	public init(X: Float32, Y: Float32, Z: Float32, W: Float32) {
 		x = X
 		y = Y
 		z = Z
@@ -94,7 +94,7 @@ type Quaternion = Vector4
 	var m14: Float32
 	var m15: Float32
 
-	init(
+	public init(
 		M0: Float32, M1: Float32, M2: Float32,
 		M3: Float32, M4: Float32, M5: Float32,
 		M6: Float32, M7: Float32, M8: Float32,
@@ -115,7 +115,7 @@ type Quaternion = Vector4
 @C public struct Ray {
 	var position: Vector3 = Vector3(0.0,0.0,0.0)
 	var direction: Vector3 = Vector3(0.0,0.0,0.0)
-	init(p: Vector3, d: Vector3) {
+	public init(p: Vector3, d: Vector3) {
 		position = p
 		direction = d
 	}
@@ -134,7 +134,7 @@ type Quaternion = Vector4
 	var rotation: Float32 = 0.0
 	var zoom: Float32 = 0.0
 
-	init(Offset: Vector2, Target: Vector2, Rotation: Float32, Zoom: Float32) {
+	public init(Offset: Vector2, Target: Vector2, Rotation: Float32, Zoom: Float32) {
 		offset = Offset
 		target = Target
 		rotation = Rotation
@@ -149,7 +149,7 @@ type Quaternion = Vector4
 	var fovy: Float32 = 0.0
 	var projection: Int32 = 0
 
-	init(P: Vector3, T: Vector3, U: Vector3, F: Float32, PR: Int32) {
+	public init(P: Vector3, T: Vector3, U: Vector3, F: Float32, PR: Int32) {
 		position = P
 		target = T
 		up = U
@@ -276,7 +276,7 @@ type RenderTexture2D = RenderTexture
 	var bottom: Int32 = 0
 	var layout: Int32 = 0
 
-	init(Source: Rectangle, Left: Int32, Top: Int32, Right: Int32, Bottom: Int32, Layout: Int32) {
+	public init(Source: Rectangle, Left: Int32, Top: Int32, Right: Int32, Bottom: Int32, Layout: Int32) {
 	source = Source
 	left = Left
 	top = Top
@@ -375,4 +375,16 @@ type AudioCallback = CFunc<(bufferData: CPointer<Unit>, frames: UInt32) -> Unit>
 
 	var ctxType: Int32 = 0
 	var ctxData = CPointer<Unit>()
+}
+
+//-----------------------------------------------------//
+
+public struct IntVector2 {
+	var x = 0_i32
+	var y = 0_i32
+
+	public init(X: Int32, Y: Int32) {
+		x = X
+		y = Y
+	}
 }

@@ -1,4 +1,6 @@
-package rayl.system
+package rayl.system.display
+
+import rayl.system.*
 
 foreign {
 	func InitWindow(width: Int32, height: Int32, title: CString): Unit
@@ -51,60 +53,95 @@ foreign {
 	func GetMonitorName(monitor: Int32): CString
 }
 
-public struct IntVector2 {
-    var x = 0_i32
-    var y = 0_i32
+public class __Window {
+	public prop IsHidden: Bool {
+		get() {
+			return unsafe { IsWindowHidden() }
+		}
+	}
+
+	public prop IsMaximized: Bool {
+		get() {
+			return unsafe { IsWindowMaximized() }
+		}
+	}
+
+	public prop IsMinimized: Bool {
+		get() {
+			return unsafe { IsWindowMinimized() }
+		}
+	}
+
+	public prop IsReady: Bool {
+		get() {
+			return unsafe { IsWindowReady() }
+		}
+	}
+
+	private var InternalState = 0_i32
+	public mut prop State: Int32 {
+		get() {
+			return InternalState
+		}
+
+		set(value) {
+			InternalState = value
+			unsafe { SetWindowState(value) }
+		}
+	}
+
+	private var InternalSize = IntVector2(0,0)
+	public mut prop WindowSize: IntVector2 {
+		get() {
+			return InternalSize
+		}
+
+		set(value) {
+			unsafe { SetWindowSize(value.x, value.y) }
+			InternalSize.x = value.x
+			InternalSize.y = value.y
+		}
+	}
+
+	private var InternalOpacity = 0.0_f32
+	public mut prop Opacity: Float32 {
+		get() {
+			return InternalOpacity
+		}
+
+		set(value) {
+			unsafe { SetWindowOpacity(value) }
+			InternalOpacity = value
+		}
+	}
+
+	private var InternalAllocTitle: CString = unsafe { LibC.mallocCString("") }
+	private var InternalTitle: String = ""
+	public mut prop Title: String {
+		get() {
+			return InternalTitle
+		}
+
+		set(value) {
+			InternalTitle = value
+			InternalAllocTitle = unsafe { LibC.mallocCString(Title) }
+			unsafe {SetWindowTitle(InternalAllocTitle)}
+		}
+	}
+
+	public func Open(Size: IntVector2, WindowTitle: String): CPointer<Unit> {
+		InternalSize = Size
+
+		InternalTitle = WindowTitle
+
+		unsafe { InitWindow(InternalSize.x, InternalSize.y, InternalAllocTitle) }
+
+		return unsafe { GetWindowHandle() }
+	}
+
+	public func Close() {
+		unsafe { CloseWindow() }
+	}
 }
 
-public class Window {
-    private var InternalSize = IntVector2()
-    public mut prop WindowSize: IntVector2 {
-        get() {
-            return InternalSize
-        }
-
-        set(value) {
-            unsafe { SetWindowSize(value.x, value.y) }
-            InternalSize.x = value.x
-            InternalSize.y = value.y
-        }
-    }
-
-    private var InternalOpacity = 0.0_f32
-    public mut prop Opacity: Float32 {
-        get() {
-            return InternalOpacity
-        }
-
-        set(value) {
-            unsafe { SetWindowOpacity(value) }
-            InternalOpacity = value
-        }
-    }
-
-    private var InternalAllocTitle: CString = unsafe { LibC.mallocCString("") }
-    private var InternalTitle: String = ""
-    public mut prop Title: String {
-        get() {
-            return InternalTitle
-        }
-
-        set(value) {
-            InternalTitle = value
-            InternalAllocTitle = unsafe { LibC.mallocCString(Title) }
-            unsafe {SetWindowTitle(InternalAllocTitle)}
-        }
-    }
-
-    public func OpenWindow(Size: IntVector2, WindowTitle: String): CPointer<Unit> {
-        InternalSize = Size
-
-        InternalTitle = WindowTitle
-
-        unsafe { InitWindow(InternalSize.x, InternalSize.y, InternalAllocTitle) }
-
-        return unsafe { GetWindowHandle() }
-    }
-}
-
-let window2 = Window()
+public let Window = __Window()
