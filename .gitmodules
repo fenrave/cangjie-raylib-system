@@ -1,0 +1,3 @@
+[submodule "dep/cangjie-raylib-raw-bindings"]
+	path = dep/cangjie-raylib-raw-bindings
+	url = https://github.com/fenrave/cangjie-raylib-raw-bindings
