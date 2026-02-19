@@ -3,3 +3,4 @@ dep
 .vscode
 .cache
 .gitmodules
+.raylib

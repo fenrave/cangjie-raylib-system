@@ -1,6 +1,6 @@
 package rayl.raylib
 
-import cangjieraylib.defs.*
+import rayl.raylib.defs.*
 
 /*
     see enumdefs for comments

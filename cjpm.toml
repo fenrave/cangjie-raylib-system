@@ -12,6 +12,3 @@
   [package.package-configuration]
 
 [dependencies]
-  [dependencies.cangjieraylib]
-    version = "1.0.0"
-    path = "/home/fenrave/Documents/cangjietest/rayl/dep/cangjie-raylib-raw-bindings"
