@@ -4,3 +4,6 @@ dep
 .cache
 .gitmodules
 .raylibib
+.gitignore
+raylibbinds
+target
