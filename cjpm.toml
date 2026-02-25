@@ -1,13 +1,13 @@
 [package]
   cjc-version = "1.0.4"
-  name = "rayl"
+  name = "raylib"
   description = "nothing here"
   version = "1.0.0"
   target-dir = ""
-  src-dir = ""
+  src-dir = "src"
   output-type = "executable"
-  compile-option = ""
-  override-compile-option = "-B /usr/lib/gcc/x86_64-redhat-linux/15/ -Llib/ -lraylib"
+  compile-option = "-Llib/ -lraylib"
+  override-compile-option = ""
   link-option = ""
   [package.package-configuration]
 

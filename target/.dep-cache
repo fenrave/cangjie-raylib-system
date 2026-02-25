@@ -1,0 +1,112 @@
+{
+  "bin": {},
+  "pkg-build": {
+    "/home/fenrave/Documents/cangjietest/raylib/src/system": {
+      "package": "raylib.system",
+      "isMacro": false,
+      "accessLevel": "public",
+      "timeStamp": 1771855335,
+      "dependencies": [
+        {
+          "orPackage": "",
+          "package": "raylib.system.defs",
+          "isStd": false,
+          "imports": [
+            {
+              "file": "/home/fenrave/Documents/cangjietest/raylib/src/system/enums.cj"
+            }
+          ]
+        }
+      ],
+      "std-dependencies": [
+        {
+          "orPackage": "",
+          "package": "std.collection",
+          "isStd": true,
+          "imports": [
+            {
+              "file": "/home/fenrave/Documents/cangjietest/raylib/src/system/input.cj"
+            },
+            {
+              "file": "/home/fenrave/Documents/cangjietest/raylib/src/system/window.cj"
+            }
+          ]
+        }
+      ],
+      "testUsed": false,
+      "mockUsed": false
+    },
+    "/home/fenrave/Documents/cangjietest/raylib/src": {
+      "package": "raylib",
+      "isMacro": false,
+      "accessLevel": "public",
+      "timeStamp": 1771948240,
+      "dependencies": [
+        {
+          "orPackage": "raylib.system.IntVector2",
+          "package": "raylib.system",
+          "isStd": false,
+          "imports": [
+            {
+              "file": "/home/fenrave/Documents/cangjietest/raylib/src/main.cj"
+            }
+          ]
+        },
+        {
+          "orPackage": "raylib.system.KeyInput",
+          "package": "raylib.system",
+          "isStd": false,
+          "imports": [
+            {
+              "file": "/home/fenrave/Documents/cangjietest/raylib/src/main.cj"
+            }
+          ]
+        },
+        {
+          "orPackage": "raylib.system.Render",
+          "package": "raylib.system",
+          "isStd": false,
+          "imports": [
+            {
+              "file": "/home/fenrave/Documents/cangjietest/raylib/src/main.cj"
+            }
+          ]
+        },
+        {
+          "orPackage": "raylib.system.Scheduler",
+          "package": "raylib.system",
+          "isStd": false,
+          "imports": [
+            {
+              "file": "/home/fenrave/Documents/cangjietest/raylib/src/main.cj"
+            }
+          ]
+        },
+        {
+          "orPackage": "raylib.system.Window",
+          "package": "raylib.system",
+          "isStd": false,
+          "imports": [
+            {
+              "file": "/home/fenrave/Documents/cangjietest/raylib/src/main.cj"
+            }
+          ]
+        }
+      ],
+      "std-dependencies": [],
+      "testUsed": false,
+      "mockUsed": false
+    },
+    "/home/fenrave/Documents/cangjietest/raylib/src/system/defs": {
+      "package": "raylib.system.defs",
+      "isMacro": false,
+      "accessLevel": "public",
+      "timeStamp": 1771855170,
+      "dependencies": [],
+      "std-dependencies": [],
+      "testUsed": false,
+      "mockUsed": false
+    }
+  },
+  "pkg-test": {}
+}

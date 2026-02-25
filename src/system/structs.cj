@@ -1,4 +1,4 @@
-package rayl.system
+package raylib.system
 
 /*
 
@@ -13,10 +13,10 @@ package rayl.system
 
 
 @C public struct Color {
-	var r: UInt8 = 0
-	var g: UInt8 = 0
-	var b: UInt8 = 0
-	var a: UInt8 = 255
+	public var r: UInt8 = 0
+	public var g: UInt8 = 0
+	public var b: UInt8 = 0
+	public var a: UInt8 = 255
 
 	public init(R: UInt8, G: UInt8, B: UInt8, A: UInt8) {
 		r = R
@@ -24,13 +24,20 @@ package rayl.system
 		b = B
 		a = A
 	}
+
+	public init() {}
 }
 
 @C public struct Rectangle {
-	var x: Float32 = 0.0
-	var y: Float32 = 0.0
-	var width: Float32 = 0.0
-	var height: Float32 = 0.0
+	public var x: Float32 = 0.0
+	public var y: Float32 = 0.0
+	public var width: Float32 = 0.0
+	public var height: Float32 = 0.0
+
+	public mut func updatePosition(X: Float32, Y: Float32): Unit {
+		x = X
+		y = Y
+	}
 
 	public init(X: Float32, Y: Float32, Width: Float32, Height: Float32) {
 		x = X
@@ -41,8 +48,8 @@ package rayl.system
 }
 
 @C public struct Vector2 {
-	var x: Float32 = 0.0
-	var y: Float32 = 0.0
+	public var x: Float32 = 0.0
+	public var y: Float32 = 0.0
 
 	public init(X: Float32, Y: Float32) {
 		x = X
@@ -51,9 +58,9 @@ package rayl.system
 }
 
 @C public struct Vector3 {
-	var x: Float32 = 0.0
-	var y: Float32 = 0.0
-	var z: Float32 = 0.0
+	public var x: Float32 = 0.0
+	public var y: Float32 = 0.0
+	public var z: Float32 = 0.0
 	public init(X: Float32, Y: Float32, Z: Float32) {
 		x = X
 		y = Y
@@ -62,10 +69,10 @@ package rayl.system
 }
 
 @C public struct Vector4 {
-	var x: Float32 = 0.0
-	var y: Float32 = 0.0
-	var z: Float32 = 0.0
-	var w: Float32 = 0.0
+	public var x: Float32 = 0.0
+	public var y: Float32 = 0.0
+	public var z: Float32 = 0.0
+	public var w: Float32 = 0.0
 	public init(X: Float32, Y: Float32, Z: Float32, W: Float32) {
 		x = X
 		y = Y
@@ -77,22 +84,22 @@ package rayl.system
 type Quaternion = Vector4
 
 @C public struct Matrix {
-	var m0: Float32
-	var m1: Float32
-	var m2: Float32
-	var m3: Float32
-	var m4: Float32
-	var m5: Float32
-	var m6: Float32
-	var m7: Float32
-	var m8: Float32
-	var m9: Float32
-	var m10: Float32
-	var m11: Float32
-	var m12: Float32
-	var m13: Float32
-	var m14: Float32
-	var m15: Float32
+	public var m0: Float32
+	public var m1: Float32
+	public var m2: Float32
+	public var m3: Float32
+	public var m4: Float32
+	public var m5: Float32
+	public var m6: Float32
+	public var m7: Float32
+	public var m8: Float32
+	public var m9: Float32
+	public var m10: Float32
+	public var m11: Float32
+	public var m12: Float32
+	public var m13: Float32
+	public var m14: Float32
+	public var m15: Float32
 
 	public init(
 		M0: Float32, M1: Float32, M2: Float32,
@@ -113,8 +120,8 @@ type Quaternion = Vector4
 
 
 @C public struct Ray {
-	var position: Vector3 = Vector3(0.0,0.0,0.0)
-	var direction: Vector3 = Vector3(0.0,0.0,0.0)
+	public var position: Vector3 = Vector3(0.0,0.0,0.0)
+	public var direction: Vector3 = Vector3(0.0,0.0,0.0)
 	public init(p: Vector3, d: Vector3) {
 		position = p
 		direction = d
@@ -122,17 +129,17 @@ type Quaternion = Vector4
 }
 
 @C public struct RayCollision {
-	var hit: Bool = false
-	var distance: Float32 = 0.0
-	var point: Vector3 = Vector3(0.0,0.0,0.0)
-	var normal: Vector3 = Vector3(0.0,0.0,0.0)
+	public var hit: Bool = false
+	public var distance: Float32 = 0.0
+	public var point: Vector3 = Vector3(0.0,0.0,0.0)
+	public var normal: Vector3 = Vector3(0.0,0.0,0.0)
 }
 
 @C public struct Camera2D {
-	var offset: Vector2 = Vector2(0.0, 0.0)
-	var target: Vector2 = Vector2(0.0, 0.0)
-	var rotation: Float32 = 0.0
-	var zoom: Float32 = 0.0
+	public var offset: Vector2 = Vector2(0.0, 0.0)
+	public var target: Vector2 = Vector2(0.0, 0.0)
+	public var rotation: Float32 = 0.0
+	public var zoom: Float32 = 1.0
 
 	public init(Offset: Vector2, Target: Vector2, Rotation: Float32, Zoom: Float32) {
 		offset = Offset
@@ -140,14 +147,16 @@ type Quaternion = Vector4
 		rotation = Rotation
 		zoom = Zoom
 	}
+
+	public init() {}
 }
 
 @C public struct Camera3D {
-	var position: Vector3 = Vector3(0.0,0.0,0.0)
-	var target = Vector3(0.0,0.0,0.0)
-	var up = Vector3(0.0,0.0,0.0)
-	var fovy: Float32 = 0.0
-	var projection: Int32 = 0
+	public var position: Vector3 = Vector3(0.0,0.0,0.0)
+	public var target: Vector3 = Vector3(0.0,0.0,0.0)
+	public var up: Vector3 = Vector3(0.0,0.0,0.0)
+	public var fovy: Float32 = 0.0
+	public var projection: Int32 = 0
 
 	public init(P: Vector3, T: Vector3, U: Vector3, F: Float32, PR: Int32) {
 		position = P
@@ -156,125 +165,127 @@ type Quaternion = Vector4
 		fovy = F
 		projection = PR
 	}
+
+	public init() {}
 }
 
 type Camera = Camera3D
 
 @C public struct Image {
-	var data = CPointer<Unit>()
-	var width: Int32 = 0
-	var height: Int32 = 0
-	var mipmaps: Int32 = 0
-	var format: Int32 = 0
+	public var data: CPointer<Unit> = CPointer<Unit>()
+	public var width: Int32 = 0
+	public var height: Int32 = 0
+	public var mipmaps: Int32 = 0
+	public var format: Int32 = 0
 }
 
 @C public struct Texture {
-	var id: UInt32 = 0
-	var width: Int32 = 0
-	var height: Int32 = 0
-	var mipmaps: Int32 = 0
-	var format: Int32 = 0
+	public var id: UInt32 = 0
+	public var width: Int32 = 0
+	public var height: Int32 = 0
+	public var mipmaps: Int32 = 0
+	public var format: Int32 = 0
 }
 
 type Texture2D = Texture
 type TextureCubemap = Texture
 
 @C public struct RenderTexture {
-	var id: UInt32 = 0
-	var texture: Texture = Texture()
-	var depth: Texture = Texture()
+	public var id: UInt32 = 0
+	public var texture: Texture = Texture()
+	public var depth: Texture = Texture()
 }
 
 type RenderTexture2D = RenderTexture
 
 @C public struct Shader {
-	var id: UInt32 = 0
-	var locs = CPointer<Int32>()
+	public var id: UInt32 = 0
+	public var locs: CPointer<Int32> = CPointer<Int32>()
 }
 
 @C public struct Mesh {
-	var vertexCount: Int32 = 0
-	var triangleCount: Int32 = 0
+	public var vertexCount: Int32 = 0
+	public var triangleCount: Int32 = 0
 	
-	var vertices = CPointer<Float32>()
-	var texcoords = CPointer<Float32>()
-	var texcoords2 = CPointer<Float32>()
-	var normals = CPointer<Float32>()
-	var tangents = CPointer<Float32>()
+	public var vertices: CPointer<Float32> = CPointer<Float32>()
+	public var texcoords: CPointer<Float32> = CPointer<Float32>()
+	public var texcoords2: CPointer<Float32> = CPointer<Float32>()
+	public var normals: CPointer<Float32> = CPointer<Float32>()
+	public var tangents: CPointer<Float32> = CPointer<Float32>()
 
-	var colors = CPointer<UInt8>()
-	var indices = CPointer<UInt16>()
+	public var colors: CPointer<UInt8> = CPointer<UInt8>()
+	public var indices: CPointer<UInt16> = CPointer<UInt16>()
 
-	var animVertices = CPointer<Float32>()
-	var animNormals = CPointer<Float32>()
-	var boneIds = CPointer<UInt8>()
-	var boneWeights = CPointer<Float32>()
-	var boneMatrices = CPointer<Float32>()
-	var boneCount: Int32 = 0
+	public var animVertices: CPointer<Float32> = CPointer<Float32>()
+	public var animNormals: CPointer<Float32> = CPointer<Float32>()
+	public var boneIds: CPointer<UInt8> = CPointer<UInt8>()
+	public var boneWeights: CPointer<Float32> = CPointer<Float32>()
+	public var boneMatrices: CPointer<Float32> = CPointer<Float32>()
+	public var boneCount: Int32 = 0
 
-	var vaoId: UInt32 = 0
-	var vboId = CPointer<UInt32>()
+	public var vaoId: UInt32 = 0
+	public var vboId: CPointer<UInt32> = CPointer<UInt32>()
 }
 
 @C public struct MaterialMap {
-	var texture: Texture2D = Texture2D()
-	var color: Color = Color(0,0,0,255)
-	var value: Float32 = 0.0
+	public var texture: Texture2D = Texture2D()
+	public var color: Color = Color(0,0,0,255)
+	public var value: Float32 = 0.0
 }
 
 @C public struct Material {
-	var shader: Shader = Shader()
-	var maps = CPointer<MaterialMap>()
-	var params = VArray<Float32, $4>(repeat: 0.0)
+	public var shader: Shader = Shader()
+	public var maps: CPointer<MaterialMap> = CPointer<MaterialMap>()
+	public var params: VArray<Float32, $4> = VArray<Float32, $4>(repeat: 0.0)
 }
 
 @C public struct BoundingBox {
-	var min = Vector3(0.0,0.0,0.0)
-	var max = Vector3(0.0,0.0,0.0)
+	public var min: Vector3 = Vector3(0.0,0.0,0.0)
+	public var max: Vector3 = Vector3(0.0,0.0,0.0)
 }
 
 @C public struct Transform {
-	var translation = Vector3(0.0,0.0,0.0)
-	var rotation = Quaternion(0.0,0.0,0.0,0.0)
-	var scale = Vector3(0.0,0.0,0.0)
+	public var translation: Vector3 = Vector3(0.0,0.0,0.0)
+	public var rotation: Quaternion = Quaternion(0.0,0.0,0.0,0.0)
+	public var scale: Vector3 = Vector3(0.0,0.0,0.0)
 }
 
 @C public struct BoneInfo {
-	var name = VArray<UInt8, $32>(repeat: 0)
-	var parent: Int32 = 0
+	public var name: VArray<UInt8, $32> = VArray<UInt8, $32>(repeat: 0)
+	public var parent: Int32 = 0
 }
 
 @C public struct Model {
-	var transform: Matrix = unsafe { zeroValue<Matrix>() }
+	public var transform: Matrix = unsafe { zeroValue<Matrix>() }
 
-	var meshCount: Int32 = 0
-	var materialCount: Int32 = 0
-	var meshes = CPointer<Mesh>()
-	var materials = CPointer<Material>()
-	var meshMaterial: Int32 = 0
+	public var meshCount: Int32 = 0
+	public var materialCount: Int32 = 0
+	public var meshes: CPointer<Mesh> = CPointer<Mesh>()
+	public var materials: CPointer<Material> = CPointer<Material>()
+	public var meshMaterial: Int32 = 0
 
-	var boneCount: Int32 = 0
-	var bones = CPointer<BoneInfo>()
-	var bindPose = CPointer<Transform>()
+	public var boneCount: Int32 = 0
+	public var bones: CPointer<BoneInfo> = CPointer<BoneInfo>()
+	public var bindPose: CPointer<Transform> = CPointer<Transform>()
 
 }
 
 @C public struct ModelAnimation {
-	var name = VArray<UInt8, $32>(repeat: 0)
+	public var name: VArray<UInt8, $32> = VArray<UInt8, $32>(repeat: 0)
 
-	var boneCount: Int32 = 0
-	var frameCount: Int32 = 0
-	var bones = CPointer<BoneInfo>()
-	var framePoses = CPointer<CPointer<Transform>>()
+	public var boneCount: Int32 = 0
+	public var frameCount: Int32 = 0
+	public var bones: CPointer<BoneInfo> = CPointer<BoneInfo>()
+	public var framePoses: CPointer<CPointer<Transform>> = CPointer<CPointer<Transform>>()
 }
 
 @C public struct NPatchInfo {
-	var source: Rectangle = Rectangle(0.0,0.0,0.0,0.0)
-	var left: Int32 = 0
-	var top: Int32 = 0
-	var right: Int32 = 0
-	var bottom: Int32 = 0
-	var layout: Int32 = 0
+	public var source: Rectangle = Rectangle(0.0,0.0,0.0,0.0)
+	public var left: Int32 = 0
+	public var top: Int32 = 0
+	public var right: Int32 = 0
+	public var bottom: Int32 = 0
+	public var layout: Int32 = 0
 
 	public init(Source: Rectangle, Left: Int32, Top: Int32, Right: Int32, Bottom: Int32, Layout: Int32) {
 	source = Source
@@ -287,101 +298,101 @@ type RenderTexture2D = RenderTexture
 }
 
 @C public struct VrDeviceInfo {
-	var hResolution: Int32 = 0
-	var vResolution: Int32 = 0
-	var hScreenSize: Float32 = 0.0
-	var vScreenSize: Float32 = 0.0
-	var eyeToScreenDistance = 0.0
-	var lensSeparationDistance = 0.0
-	var interpupillaryDistance = 0.0
-	var lensDistortionValues = VArray<Float32, $4>(repeat: 0.0)
-	var chromaAbcorrection = VArray<Float32, $4>(repeat: 0.0)
+	public var hResolution: Int32 = 0
+	public var vResolution: Int32 = 0
+	public var hScreenSize: Float32 = 0.0
+	public var vScreenSize: Float32 = 0.0
+	public var eyeToScreenDistance: Float32 = 0.0
+	public var lensSeparationDistance: Float32 = 0.0
+	public var interpupillaryDistance: Float32 = 0.0
+	public var lensDistortionValues: VArray<Float32, $4> = VArray<Float32, $4>(repeat: 0.0)
+	public var chromaAbcorrection: VArray<Float32, $4> = VArray<Float32, $4>(repeat: 0.0)
 }
 
 @C public struct VrStereoConfig {
-	var projection = VArray<Matrix, $2>(repeat: unsafe { zeroValue<Matrix>() })
-	var viewOffset = VArray<Matrix, $2>(repeat: unsafe { zeroValue<Matrix>() })
-	var leftLensCenter = VArray<Float32, $2>(repeat: 0.0)
-	var rightLensCenter = VArray<Float32, $2>(repeat: 0.0)
-	var leftScreenCenter = VArray<Float32, $2>(repeat: 0.0)
-	var rightScreenCenter = VArray<Float32, $2>(repeat: 0.0)
-	var scale = VArray<Float32, $2>(repeat: 0.0)
-	var scaleIn = VArray<Float32, $2>(repeat: 0.0)
+	public var projection: VArray<Matrix, $2> = VArray<Matrix, $2>(repeat: unsafe { zeroValue<Matrix>() })
+	public var viewOffset: VArray<Matrix, $2> = VArray<Matrix, $2>(repeat: unsafe { zeroValue<Matrix>() })
+	public var leftLensCenter: VArray<Float32, $2> = VArray<Float32, $2>(repeat: 0.0)
+	public var rightLensCenter: VArray<Float32, $2> = VArray<Float32, $2>(repeat: 0.0)
+	public var leftScreenCenter: VArray<Float32, $2> = VArray<Float32, $2>(repeat: 0.0)
+	public var rightScreenCenter: VArray<Float32, $2> = VArray<Float32, $2>(repeat: 0.0)
+	public var scale: VArray<Float32, $2> = VArray<Float32, $2>(repeat: 0.0)
+	public var scaleIn: VArray<Float32, $2> = VArray<Float32, $2>(repeat: 0.0)
 }
 
 @C public struct FilePathList {
-	var count: UInt32 = 0
-	var paths: CPointer<CString> = unsafe { zeroValue<CPointer<CString>>() }
+	public var count: UInt32 = 0
+	public var paths: CPointer<CString> = unsafe { zeroValue<CPointer<CString>>() }
 }
 
 @C public struct AutomationEvent {
-	var frame: UInt32 = 0
+	public var frame: UInt32 = 0
 	//uppercased because 'type' is a reserved keyword
-	var Type: UInt32 = 0
-	var params = VArray<Int32, $4>(repeat: 0)
+	public var Type: UInt32 = 0
+	public var params: VArray<Int32, $4> = VArray<Int32, $4>(repeat: 0)
 }
 
 @C public struct AutomationEventList {
-	var capacity: UInt32 = 0
-	var count: UInt32 = 0
-	var events = CPointer<AutomationEventList>()
+	public var capacity: UInt32 = 0
+	public var count: UInt32 = 0
+	public var events: CPointer<AutomationEventList> = CPointer<AutomationEventList>()
 }
 
 @C public struct GlyphInfo {
-	var value: Int32 = 0
-	var offsetX: Int32 = 0
-	var offsetY: Int32 = 0
-	var advanceX: Int32 = 0
-	var image: Image = Image()
+	public var value: Int32 = 0
+	public var offsetX: Int32 = 0
+	public var offsetY: Int32 = 0
+	public var advanceX: Int32 = 0
+	public var image: Image = Image()
 }
 
 @C public struct Font {
-	var baseSize: Int32 = 0
-	var glyphCount: Int32 = 0
-	var glyphPadding: Int32 = 0
-	var texture: Texture2D = Texture2D()
-	var recs = CPointer<Rectangle>()
-	var glyphs = CPointer<GlyphInfo>()
+	public var baseSize: Int32 = 0
+	public var glyphCount: Int32 = 0
+	public var glyphPadding: Int32 = 0
+	public var texture: Texture2D = Texture2D()
+	public var recs: CPointer<Rectangle> = CPointer<Rectangle>()
+	public var glyphs: CPointer<GlyphInfo> = CPointer<GlyphInfo>()
 }
 
 type AudioCallback = CFunc<(bufferData: CPointer<Unit>, frames: UInt32) -> Unit>
 
 @C public struct Wave {
-	var frameCount: UInt32 = 0
-	var sampleRate: UInt32 = 0
-	var sampleSize: UInt32 = 0
-	var channels: UInt32 = 0
-	var data = CPointer<Unit>()
+	public var frameCount: UInt32 = 0
+	public var sampleRate: UInt32 = 0
+	public var sampleSize: UInt32 = 0
+	public var channels: UInt32 = 0
+	public var data: CPointer<Unit> = CPointer<Unit>()
 }
 
 @C public struct AudioStream {
-	var buffer = CPointer<Unit>()
-	var processor = CPointer<Unit>()
+	public var buffer: CPointer<Unit> = CPointer<Unit>()
+	public var processor: CPointer<Unit> = CPointer<Unit>()
 
-	var sampleRate: UInt32 = 0
-	var sampleSize: UInt32 = 0
-	var channels: UInt32 = 0
+	public var sampleRate: UInt32 = 0
+	public var sampleSize: UInt32 = 0
+	public var channels: UInt32 = 0
 }
 
 @C public struct Sound {
-	var stream: AudioStream = AudioStream()
-	var frameCount: UInt32 = 0
+	public var stream: AudioStream = AudioStream()
+	public var frameCount: UInt32 = 0
 }
 
 @C public struct Music {
-	var stream: AudioStream = AudioStream()
-	var frameCount: UInt32 = 0
-	var looping: Bool = false
+	public var stream: AudioStream = AudioStream()
+	public var frameCount: UInt32 = 0
+	public var looping: Bool = false
 
-	var ctxType: Int32 = 0
-	var ctxData = CPointer<Unit>()
+	public var ctxType: Int32 = 0
+	public var ctxData: CPointer<Unit> = CPointer<Unit>()
 }
 
 //-----------------------------------------------------//
 
 public struct IntVector2 {
-	var x = 0_i32
-	var y = 0_i32
+	public var x: Int32 = 0_i32
+	public var y: Int32 = 0_i32
 
 	public init(X: Int32, Y: Int32) {
 		x = X
