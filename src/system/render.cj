@@ -102,10 +102,12 @@ public class Render2D {
 	private static let PRERENDER = ArrayList<Callback>()
 	private static let WHILERENDER = ArrayList<Callback>()
 	private static let POSTRENDER = ArrayList<Callback>()
-
-	//0 -> preRender
-	//1 -> whileRender
-	//2 -> postRender
+	
+	/*
+		0 -> preRender
+		1 -> whileRender
+		2 -> postRender
+	*/
 	public static func bindTo(SchedulerState!: Int32 = 1, OnState!: Callback): Unit {
 		match (SchedulerState) {
 			case 0 => PRERENDER.add(OnState)
@@ -145,9 +147,11 @@ public class Render3D {
 	private static let WHILERENDER = ArrayList<Callback>()
 	private static let POSTRENDER = ArrayList<Callback>()
 
-	//0 -> preRender
-	//1 -> whileRender
-	//2 -> postRender
+	/*
+		0 -> preRender
+		1 -> whileRender
+		2 -> postRender
+	*/
 	public static func bindTo(SchedulerState!: Int32 = 1, OnState!: Callback): Unit {
 		match (SchedulerState) {
 			case 0 => PRERENDER.add(OnState)
