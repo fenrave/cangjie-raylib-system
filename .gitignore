@@ -6,3 +6,5 @@ dep
 .gitignore
 raylibbinds
 target
+cjpm.lock
+cjlintignore.cfg
