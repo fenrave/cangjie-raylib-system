@@ -3,7 +3,6 @@ dep
 .vscode
 .cache
 .gitmodules
-.raylibib
 .gitignore
 raylibbinds
 target
