@@ -88,14 +88,13 @@ open class Input {
 }
 
 public class KeyInput <: Input {
-	public static func check(): Unit {
-		let delta: Float32 = unsafe { GetFrameTime() }
+	public static func check(DeltaTime!: Float32 = unsafe{ GetFrameTime() }): Unit {
 		for (InputObj in KEYREGISTER) {
 			let key: Int32 = InputObj.keyCode
 
 			unsafe {
-				if (IsKeyDown(key)) { InputObj.onDown(delta) }
-				if (IsKeyUp(key)) { InputObj.onUp(delta) }
+				if (IsKeyDown(key)) { InputObj.onDown(DeltaTime) }
+				if (IsKeyUp(key)) { InputObj.onUp(DeltaTime) }
 			}
 		}
 	}
@@ -111,14 +110,13 @@ public class KeyInput <: Input {
 }
 
 public class MouseInput <: Input {
-	public static func check(): Unit {
-		let delta: Float32 = unsafe { GetFrameTime() }
-		for (InputObj in MOUSEREGISTER) {
+	public static func check(DeltaTime!: Float32 = unsafe{ GetFrameTime() }): Unit {
+		for (InputObj in KEYREGISTER) {
 			let key: Int32 = InputObj.keyCode
 
 			unsafe {
-				if (IsMouseButtonDown(key)) { InputObj.onDown(delta) }
-				if (IsMouseButtonUp(key)) { InputObj.onUp(delta) }
+				if (IsMouseButtonDown(key)) { InputObj.onDown(DeltaTime) }
+				if (IsMouseButtonUp(key)) { InputObj.onUp(DeltaTime) }
 			}
 		}
 	}

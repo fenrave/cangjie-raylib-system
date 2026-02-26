@@ -98,15 +98,55 @@ foreign {
 
 private type Callback = (DT: Float32) -> Unit
 
+public class Draw2D {
+	public static func drawPixel(X: Int32, Y: Int32, Color: Color): Unit {
+		unsafe { DrawPixel(X, Y, Color) }
+	}
+
+	public static func drawPixel(Position: Vector2, Color: Color): Unit {
+		unsafe { DrawPixelV(Position, Color) }
+	}
+
+	public static func drawLine(StartX: Int32, StartY: Int32, EndX: Int32, EndY: Int32, Color: Color): Unit {
+		unsafe { DrawLine(StartX, StartY, EndX, EndY, Color) }
+	}
+
+	public static func drawLine(Start: Vector2, End: Vector2, Color: Color): Unit {
+		unsafe { DrawLineV(Start, End, Color) }
+	}
+
+	public static func drawCircle(CenterX: Int32, CenterY: Int32, Radius: Float32, Color: Color): Unit {
+		unsafe { DrawCircle(CenterX, CenterY, Radius, Color) }
+	}
+
+	public static func drawCircle(Center: Vector2, Radius: Float32, Color: Color): Unit {
+		unsafe { DrawCircleV(Center, Radius, Color) }
+	}
+
+	public static func drawRectangle(PosX: Int32, PosY: Int32, Width: Int32, Height: Int32, Color: Color): Unit {
+		unsafe { DrawRectangle(PosX, PosY, Width, Height, Color) }
+	}
+
+	public static func drawRectangle(Pos: Vector2, Size: Vector2, Color: Color): Unit {
+		unsafe { DrawRectangleV(Pos, Size, Color) }
+	}
+
+	public static func drawRectangle(Rec: Rectangle, Color: Color): Unit {
+		unsafe { DrawRectangleRec(Rec, Color) }
+	}
+}
+
 public class Render2D {
 	private static let PRERENDER = ArrayList<Callback>()
 	private static let WHILERENDER = ArrayList<Callback>()
 	private static let POSTRENDER = ArrayList<Callback>()
-	
+
 	/*
-		0 -> preRender
-		1 -> whileRender
-		2 -> postRender
+	-V----------------V-
+	|0 -> 	preRender
+	|1 -> 	whileRender
+	|2 -> 	postRender
+	--------------------
 	*/
 	public static func bindTo(SchedulerState!: Int32 = 1, OnState!: Callback): Unit {
 		match (SchedulerState) {
@@ -148,9 +188,11 @@ public class Render3D {
 	private static let POSTRENDER = ArrayList<Callback>()
 
 	/*
-		0 -> preRender
-		1 -> whileRender
-		2 -> postRender
+	-V----------------V-
+	|0 -> 	preRender
+	|1 -> 	whileRender
+	|2 -> 	postRender
+	--------------------
 	*/
 	public static func bindTo(SchedulerState!: Int32 = 1, OnState!: Callback): Unit {
 		match (SchedulerState) {

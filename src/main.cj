@@ -22,8 +22,8 @@ main(): Int64 {
         DT: Float32 => for (i in 1..chunkRef.size) {
             var rec = chunkRef[1]
             rec.updatePosition(
-                250.0 + NUM.suggestFloat32(-50.0, 50.0),
-                250.0 + NUM.suggestFloat32(-50.0, 50.0)
+                225.0 + NUM.suggestFloat32(-100.0, 100.0),
+                225.0 + NUM.suggestFloat32(-100.0, 100.0)
             )
             DrawRectangleRec(rec, DEFAULTCOLOR)
             }
@@ -43,11 +43,11 @@ main(): Int64 {
 
     Render2D.bindTo(
         SchedulerState: 0,
-        OnState: { _: Float32 => KeyInput.check() }
+        OnState: KeyInput.check
     )
 
     Render2D.mainCamera = Camera
-    Scheduler.start()
+    Scheduler.start(InitFrameRate: 120)
 
     return 0
 }
