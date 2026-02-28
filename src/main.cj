@@ -15,7 +15,7 @@ func start() {
         Tex: Tex,
         Columns: 5,
         Rows: 1,
-        Canvas: Rectangle(0.0, 0.0, 500.0, 500.0),
+        Canvas: Rectangle(0.0, 0.0, 75.0, 75.0),
         Cels: 5,
         Skip: 3,
         Scale: Vector2(112.0, 112.0)
@@ -23,12 +23,37 @@ func start() {
 
     Render2D.bindTo(
         SchedulerState: 1,
-        OnState: { _: Float32 => NewCanvas.next() }
+        OnState: { _: Float32 => NewCanvas.traverse() }
     )
 
-    let newKey = KeyInput(
+
+    let KeyW = KeyInput(
+        Key: Keyboard.W,
+        Down: { DT: Float32 =>
+            NewCanvas.CanvasPosition += Vector2(0.0,-1.0)
+        }
+    )
+
+
+    let KeyA = KeyInput(
         Key: Keyboard.A,
-        Down: { DT: Float32 => print("FrameTime is -> ${DT}\n") }
+        Down: { DT: Float32 =>
+            NewCanvas.CanvasPosition += Vector2(-1.0,0.0)
+        }
+    )
+
+    let KeyD = KeyInput(
+        Key: Keyboard.D,
+        Down: { DT: Float32 =>
+            NewCanvas.CanvasPosition += Vector2(1.0,0.0)
+        }
+    )
+
+    let KeyS = KeyInput(
+        Key: Keyboard.S,
+        Down: { DT: Float32 =>
+            NewCanvas.CanvasPosition += Vector2(0.0,1.0)
+        }
     )
 
     Render2D.bindTo(
@@ -37,7 +62,7 @@ func start() {
     )
 
     Render2D.mainCamera = Camera
-    Scheduler.start(InitFrameRate: 60)
+    Scheduler.start(InitFrameRate: 120)
 }
 
 main(): Int64 {

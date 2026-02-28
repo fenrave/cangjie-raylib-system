@@ -23,22 +23,6 @@ foreign {
 	//-----//
 
 	//-----\\
-	func LoadShader(vsFileName: CString, fsFileName: CString): Shader
-	func LoadShaderFromMemory(vsCode: CString, fsCode: CString): Shader
-	//-----//
-
-	//-----\\
-	func IsShaderValid(shader: Shader): Bool
-	func GetShaderLocation(Shader: Shader, uniformName: CString): Int32
-	func GetShaderLocationAttrib(shader: Shader, attribName: CString): Int32
-	func SetShaderValue(shader: Shader, locIndex: Int32, value: CPointer<Unit>, uniformType: Int32): Unit
-	func SetShaderValueV(shader: Shader, locIndex: Int32, value: CPointer<Unit>, uniformType: Int32, count: Int32): Unit
-	func SetShaderValueMatrix(shader: Shader, locIndex: Int32, mat: Matrix): Unit
-	func SetShaderValueTexture(shader: Shader, locIndex: Int32, texture: Texture): Unit
-	func UnloadShader(shader: Shader): Unit
-	//-----//
-
-	//-----\\
 	func GetScreenToWorldRay(position: Vector2, camera: Camera3D): Ray
 	func GetScreenToWorldRayEx(position: Vector2, camera: Camera3D, width: Int32, height: Int32): Ray
 	func GetWorldToScreen(position: Vector3, camera: Camera3D): Vector2
@@ -98,40 +82,40 @@ foreign {
 
 private type Callback = (DT: Float32) -> Unit
 
-public class Draw2D {
-	public static func drawPixel(X: Int32, Y: Int32, Color: Color): Unit {
+public interface Draw2D {
+	static func drawPixel(X: Int32, Y: Int32, Color: Color): Unit {
 		unsafe { DrawPixel(X, Y, Color) }
 	}
 
-	public static func drawPixel(Position: Vector2, Color: Color): Unit {
+	static func drawPixel(Position: Vector2, Color: Color): Unit {
 		unsafe { DrawPixelV(Position, Color) }
 	}
 
-	public static func drawLine(StartX: Int32, StartY: Int32, EndX: Int32, EndY: Int32, Color: Color): Unit {
+	static func drawLine(StartX: Int32, StartY: Int32, EndX: Int32, EndY: Int32, Color: Color): Unit {
 		unsafe { DrawLine(StartX, StartY, EndX, EndY, Color) }
 	}
 
-	public static func drawLine(Start: Vector2, End: Vector2, Color: Color): Unit {
+	static func drawLine(Start: Vector2, End: Vector2, Color: Color): Unit {
 		unsafe { DrawLineV(Start, End, Color) }
 	}
 
-	public static func drawCircle(CenterX: Int32, CenterY: Int32, Radius: Float32, Color: Color): Unit {
+	static func drawCircle(CenterX: Int32, CenterY: Int32, Radius: Float32, Color: Color): Unit {
 		unsafe { DrawCircle(CenterX, CenterY, Radius, Color) }
 	}
 
-	public static func drawCircle(Center: Vector2, Radius: Float32, Color: Color): Unit {
+	static func drawCircle(Center: Vector2, Radius: Float32, Color: Color): Unit {
 		unsafe { DrawCircleV(Center, Radius, Color) }
 	}
 
-	public static func drawRectangle(PosX: Int32, PosY: Int32, Width: Int32, Height: Int32, Color: Color): Unit {
+	static func drawRectangle(PosX: Int32, PosY: Int32, Width: Int32, Height: Int32, Color: Color): Unit {
 		unsafe { DrawRectangle(PosX, PosY, Width, Height, Color) }
 	}
 
-	public static func drawRectangle(Pos: Vector2, Size: Vector2, Color: Color): Unit {
+	static func drawRectangle(Pos: Vector2, Size: Vector2, Color: Color): Unit {
 		unsafe { DrawRectangleV(Pos, Size, Color) }
 	}
 
-	public static func drawRectangle(Rec: Rectangle, Color: Color): Unit {
+	static func drawRectangle(Rec: Rectangle, Color: Color): Unit {
 		unsafe { DrawRectangleRec(Rec, Color) }
 	}
 }
@@ -202,7 +186,6 @@ public class Render3D {
 		let DT: Float32 = GetFrameTime()
 
 		for (PRECB in PRERENDER) { PRECB(DT) }
-
 
 		BeginMode3D(mainCamera3D)
 

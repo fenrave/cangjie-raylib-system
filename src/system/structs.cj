@@ -59,6 +59,33 @@ package raylib.system
 		x = X
 		y = Y
 	}
+
+	public operator func -(Target: Vector2): Vector2 {
+		return Vector2(
+			x - Target.x,
+			y - Target.y
+		)
+	}
+	public operator func +(Target: Vector2): Vector2 {
+		return Vector2(
+			x + Target.x,
+			y + Target.y
+		)
+	}
+
+	public operator func *(Target: Vector2): Vector2 {
+		return Vector2(
+			x * Target.x,
+			y * Target.y
+		)
+	}
+
+	public operator func /(Target: Vector2): Vector2 {
+		return Vector2(
+			x / Target.x,
+			y / Target.y
+		)
+	}
 }
 
 @C public struct Vector3 {
@@ -69,6 +96,38 @@ package raylib.system
 		x = X
 		y = Y
 		z = Z
+	}
+
+	public operator func -(Target: Vector3): Vector3 {
+		return Vector3(
+			z - Target.z,
+			x - Target.x,
+			y - Target.y,
+		)
+	}
+
+	public operator func +(Target: Vector3): Vector3 {
+		return Vector3(
+			z + Target.z,
+			x + Target.x,
+			y + Target.y,
+		)
+	}
+
+	public operator func *(Target: Vector3): Vector3 {
+		return Vector3(
+			z * Target.z,
+			x * Target.x,
+			y * Target.y,
+		)
+	}
+
+	public operator func /(Target: Vector3): Vector3 {
+		return Vector3(
+			z / Target.z,
+			x / Target.x,
+			y / Target.y,
+		)
 	}
 }
 

@@ -40,55 +40,75 @@ foreign {
 	func DrawTextureNPatch(texture: Texture, nPatchInfo: NPatchInfo, dest: Rectangle, origin: Vector2, rotation: Float32, tint: Color): Unit
 }
 
-public class ImageGlobal {
-	public static func unload(Image: Image): Unit {
+public interface ImageGlobal {
+	static func unload(Image: Image): Unit {
 		unsafe { UnloadImage(Image) }
 	}
 
-	public static func getImage(FileName: CString): Image {
+	static func getImage(FileName: CString): Image {
 		return unsafe { LoadImage(FileName) }
 	}
 
-	public static func getImage(FileName: CString, Width: Int32, Height: Int32, Format: Int32, HeaderSize: Int32): Image {
+	static func getImage(FileName: CString, Width: Int32, Height: Int32, Format: Int32, HeaderSize: Int32): Image {
 		return unsafe { LoadImageRaw(FileName, Width, Height, Format, HeaderSize) }
 	}
 
-	public static func getImage(Texture: Texture): Image {
+	static func getImage(Texture: Texture): Image {
 		return unsafe { LoadImageFromTexture(Texture) }
 	}
 
-	public static func getAnim(FileName: CString, Frames: CPointer<Int32>): Image {
+	static func getAnim(FileName: CString, Frames: CPointer<Int32>): Image {
 		return unsafe { LoadImageAnim(FileName, Frames) }
 	}
 
-	public static func getAnim(FileType: CString, FileData: CString, DataSize: Int32, Frames: CPointer<Int32>): Image {
+	static func getAnim(FileType: CString, FileData: CString, DataSize: Int32, Frames: CPointer<Int32>): Image {
 		return unsafe { LoadImageAnimFromMemory(FileType, FileData, DataSize, Frames) }
 	}
 }
 
-public class TextureGlobal {
-	public static func unload(Texture: Texture): Unit {
+public interface TextureGlobal {
+	static func unload(Texture: Texture): Unit {
 		unsafe { UnloadTexture(Texture) }
 	}
 
-	public static func getTexture(FileName: CString): Texture {
+	static func updateTexture(Texture: Texture, Pixels: CPointer<Unit>): Unit {
+		unsafe { UpdateTexture(Texture, Pixels) }
+	}
+
+	static func setFilter(Texture: Texture, Filter: Int32): Unit {
+		unsafe {SetTextureFilter(Texture, Filter)}
+	}
+
+	static func setWrap(Texture: Texture, Wrap: Int32): Unit {
+		unsafe {SetTextureWrap(Texture, Wrap)}
+	}
+
+	static func getTexture(FileName: CString): Texture {
 		return unsafe { LoadTexture(FileName) }
 	}
 
-	public static func getTexture(Image: Image): Texture {
+	static func getTexture(Image: Image): Texture {
 		return unsafe { LoadTextureFromImage(Image) }
 	}
 
-	public static func isValid(Texture: Texture): Bool {
-		return unsafe { IsTextureValid(Texture) }
+	static func getRenderTexture(Width: Int32, Height: Int32): RenderTexture {
+		return unsafe { LoadRenderTexture(Width, Height) }
 	}
 
-	public static func getCubemap(Image: Image, Layout: Int32): TextureCubemap {
+	static func getCubemap(Image: Image, Layout: Int32): TextureCubemap {
 		return unsafe { LoadTextureCubemap(Image, Layout) }
 	}
 
-	public static func genMipMaps(Texture: CPointer<Texture>): Unit {
+	static func genMipMaps(Texture: CPointer<Texture>): Unit {
 		unsafe { GenTextureMipmaps(Texture) }
+	}
+
+	static func isValid(Target: Texture): Bool {
+		return unsafe { IsTextureValid(Target) }
+	}
+
+	static func isValid(Target: RenderTexture): Bool {
+		return unsafe { IsRenderTextureValid(Target) }
 	}
 }
 
@@ -108,7 +128,7 @@ public open class TexObject {
 }
 
 public class Canvas <: TexObject {
-	private let InternalCanvas: Rectangle
+	private var InternalCanvas: Rectangle
 	private var CelArray = Array<Rectangle>()
 	private var InternalSkip: Int64 = 0
 
@@ -120,6 +140,23 @@ public class Canvas <: TexObject {
 	
 	public let TexColumns: Int64
 	public let TexRows: Int64
+
+	public mut prop CanvasPosition: Vector2 {
+		get() { return InternalCanvas.Position }
+
+		set(NewPos) {
+			InternalCanvas.Position = NewPos
+		}
+	}
+
+	public mut prop CanvasSize: Vector2 {
+		get() { return Vector2(InternalCanvas.width, InternalCanvas.height) }
+
+		set(NewSize) {
+			InternalCanvas.width = NewSize.x
+			InternalCanvas.height = NewSize.y
+		}
+	}
 
 	private var InternalScale: Vector2 = Vector2(0.0, 0.0)
 	public mut prop TexScale: Vector2 {
@@ -168,7 +205,7 @@ public class Canvas <: TexObject {
 		})
 	}
 
-	public func next(): Unit {
+	public func traverse(): Unit {
 		this.InternalSkip++
 		if (this.FrameSkip > this.InternalSkip) {
 			this.draw()
@@ -183,7 +220,7 @@ public class Canvas <: TexObject {
 		this.draw()
 	}
 
-	public func back(): Unit {
+	public func reverse(): Unit {
 		this.InternalSkip++
 		if (this.FrameSkip > this.InternalSkip) {
 			this.draw()
@@ -200,7 +237,6 @@ public class Canvas <: TexObject {
 
 
 	public func draw(): Unit {
-		// print(CurrentCel)
 		unsafe { DrawTexturePro(
 			this.InternalTexture,
 			this.CelArray[this.CurrentCel],
@@ -209,7 +245,6 @@ public class Canvas <: TexObject {
 			this.Rotation,
 			this.CanvasColor
 		) }
-		
 	}
 
 	public init(
