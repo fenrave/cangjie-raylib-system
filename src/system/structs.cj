@@ -34,9 +34,13 @@ package raylib.system
 	public var width: Float32 = 0.0
 	public var height: Float32 = 0.0
 
-	public mut func updatePosition(X: Float32, Y: Float32): Unit {
-		x = X
-		y = Y
+	public mut prop Position: Vector2 {
+		get() { return Vector2(this.x, this.y) }
+
+		set(NewPos) {
+			this.x = NewPos.x
+			this.y = NewPos.y
+		}
 	}
 
 	public init(X: Float32, Y: Float32, Width: Float32, Height: Float32) {

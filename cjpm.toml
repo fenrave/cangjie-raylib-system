@@ -6,7 +6,7 @@
   target-dir = ""
   src-dir = "src"
   output-type = "executable"
-  compile-option = "-Llib/ -lraylib"
+  compile-option = "-Woff unused -Llib/ -lraylib -g"
   override-compile-option = ""
   link-option = ""
   [package.package-configuration]

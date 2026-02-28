@@ -1,44 +1,34 @@
 package raylib
 
-import raylib.system.{KeyInput, IntVector2, Scheduler, Window, Camera2D, Render2D, Rectangle, Color, Keyboard}
-import std.random.Random
-import std.unittest.prop_test.RandomSource
+import raylib.system.{KeyInput, IntVector2, Scheduler, Window, Camera2D, Render2D, Rectangle, Color, Keyboard, Vector2, Canvas, TextureGlobal}
 
-let NUM = Random()
-
-foreign func DrawRectangleRec(rec: Rectangle, color: Color): Unit
-
-let DEFAULTCOLOR = Color(50,50,50,255)
-
-main(): Int64 {
+func start() {
     let WINDOWSIZE = IntVector2(500, 500)
     let Camera = Camera2D()
-    var CHUNK = VArray<Rectangle, $50>(repeat: Rectangle(0.0, 0.0, 50.0, 50.0))
 
     Window.open(WINDOWSIZE, "Hi")
     Window.monitor = 0
-    let chunkRef = CHUNK
-    let drawFunc = unsafe { {
-        DT: Float32 => for (i in 1..chunkRef.size) {
-            var rec = chunkRef[1]
-            rec.updatePosition(
-                225.0 + NUM.suggestFloat32(-100.0, 100.0),
-                225.0 + NUM.suggestFloat32(-100.0, 100.0)
-            )
-            DrawRectangleRec(rec, DEFAULTCOLOR)
-            }
-        }
-    }
+
+    let Tex = TextureGlobal.getTexture(unsafe { LibC.mallocCString("./src/textures/quail.bmp") })
+
+    let NewCanvas = Canvas(
+        Tex: Tex,
+        Columns: 5,
+        Rows: 1,
+        Canvas: Rectangle(0.0, 0.0, 500.0, 500.0),
+        Cels: 5,
+        Skip: 3,
+        Scale: Vector2(112.0, 112.0)
+    )
 
     Render2D.bindTo(
         SchedulerState: 1,
-        OnState: drawFunc
+        OnState: { _: Float32 => NewCanvas.next() }
     )
 
     let newKey = KeyInput(
         Key: Keyboard.A,
-        Down: { DT: Float32 => print("FrameTime is -> ${DT}\n") },
-        Up: { DT: Float32 => print("hello\n") }
+        Down: { DT: Float32 => print("FrameTime is -> ${DT}\n") }
     )
 
     Render2D.bindTo(
@@ -47,7 +37,10 @@ main(): Int64 {
     )
 
     Render2D.mainCamera = Camera
-    Scheduler.start(InitFrameRate: 120)
+    Scheduler.start(InitFrameRate: 60)
+}
 
+main(): Int64 {
+    start()
     return 0
 }

@@ -158,24 +158,17 @@ public class Render2D {
 	}
 
 	public static var mainCamera: Camera2D = Camera2D()
-	public static var bgColor: Color = Color()
 
 	public unsafe static func draw(): Unit {
 		let DT: Float32 = GetFrameTime()
 
 		for (PRECB in PRERENDER) { PRECB(DT) }
 
-		BeginDrawing()
-
-		ClearBackground(bgColor)
-
 		BeginMode2D(mainCamera)
 
 		for (WHILECB in WHILERENDER) { WHILECB(DT) }
 
 		EndMode2D()
-
-		EndDrawing()
 
 		for (POSTCB in POSTRENDER) { POSTCB(DT) }
 	}
@@ -204,16 +197,12 @@ public class Render3D {
 	}
 
 	public static var mainCamera3D: Camera3D = Camera3D()
-	public static var bgColor: Color = Color()
 
 	public unsafe static func draw(): Unit {
 		let DT: Float32 = GetFrameTime()
 
 		for (PRECB in PRERENDER) { PRECB(DT) }
 
-		BeginDrawing()
-
-		ClearBackground(bgColor)
 
 		BeginMode3D(mainCamera3D)
 
@@ -221,11 +210,12 @@ public class Render3D {
 
 		EndMode3D()
 
-		EndDrawing()
-
 		for (POSTCB in POSTRENDER) { POSTCB(DT) }
 	}
+}
 
+public class RenderGlobal {
+	public static var bgColor: Color = Color(0,0,0,255)
 }
 
 public class Scheduler {
@@ -241,8 +231,11 @@ public class Scheduler {
 		frameRate = InitFrameRate
 
 		unsafe { while (!WindowShouldClose()) {
+				BeginDrawing()
+				ClearBackground(RenderGlobal.bgColor)
 				Render3D.draw()
 				Render2D.draw()
+				EndDrawing()
 			}
 		}
 	}
