@@ -3,8 +3,7 @@ package raylib
 import raylib.system.{KeyInput, IntVector2, Scheduler, Window, Camera2D, Render2D, Rectangle, Color, Keyboard, Vector2, Canvas, TextureGlobal}
 
 func start() {
-    let WINDOWSIZE = IntVector2(500, 500)
-    let Camera = Camera2D()
+    let WINDOWSIZE = IntVector2(500, 500) ; let Camera = Camera2D()
 
     Window.open(WINDOWSIZE, "Hi")
     Window.monitor = 0
@@ -26,32 +25,30 @@ func start() {
         OnState: { _: Float32 => NewCanvas.traverse() }
     )
 
-
     let KeyW = KeyInput(
         Key: Keyboard.W,
-        Down: { DT: Float32 =>
+        Down: { _: Float32 =>
             NewCanvas.CanvasPosition += Vector2(0.0,-1.0)
         }
     )
 
-
     let KeyA = KeyInput(
         Key: Keyboard.A,
-        Down: { DT: Float32 =>
+        Down: { _: Float32 =>
             NewCanvas.CanvasPosition += Vector2(-1.0,0.0)
         }
     )
 
     let KeyD = KeyInput(
         Key: Keyboard.D,
-        Down: { DT: Float32 =>
+        Down: { _: Float32 =>
             NewCanvas.CanvasPosition += Vector2(1.0,0.0)
         }
     )
 
     let KeyS = KeyInput(
         Key: Keyboard.S,
-        Down: { DT: Float32 =>
+        Down: { _: Float32 =>
             NewCanvas.CanvasPosition += Vector2(0.0,1.0)
         }
     )

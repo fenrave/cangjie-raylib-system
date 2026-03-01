@@ -40,6 +40,33 @@ foreign {
 	func DrawTextureNPatch(texture: Texture, nPatchInfo: NPatchInfo, dest: Rectangle, origin: Vector2, rotation: Float32, tint: Color): Unit
 }
 
+protected interface TexDraw {
+	//DrawTexture
+	static func draw(Target: Texture, X: Int32, Y: Int32, Tint: Color): Unit {
+		unsafe { DrawTexture(Target, X, Y, Tint) }
+	}
+	//DrawTextureV
+	static func draw(Target: Texture, Position: Vector2, Tint: Color): Unit {
+		unsafe { DrawTextureV(Target, Position, Tint) }
+	}
+	//DrawTextureEx
+	static func draw(Target: Texture, Position: Vector2, Rotation: Float32, Scale: Float32, Tint: Color): Unit {
+		unsafe { DrawTextureEx(Target, Position, Rotation, Scale, Tint) }
+	}
+	//DrawTextureRec
+	static func draw(Target: Texture, Source: Rectangle, Position: Vector2, Tint: Color): Unit {
+		unsafe { DrawTextureRec(Target, Source, Position, Tint) }
+	}
+	//DrawTexturePro
+	static func draw(Target: Texture, Source: Rectangle, Dest: Rectangle, Origin: Vector2, Rotation: Float32, Color: Color): Unit {
+		unsafe { DrawTexturePro(Target, Source, Dest, Origin, Rotation, Color) }
+	}
+	//DrawTextureNPatch
+	static func draw(Target: Texture, NPatch: NPatchInfo, Dest: Rectangle, Origin: Vector2, Rotation: Float32, Tint: Color): Unit {
+		unsafe { DrawTextureNPatch(Target, NPatch, Dest, Origin, Rotation, Tint) }
+	}
+}
+
 public interface ImageGlobal {
 	static func unload(Image: Image): Unit {
 		unsafe { UnloadImage(Image) }
@@ -66,7 +93,7 @@ public interface ImageGlobal {
 	}
 }
 
-public interface TextureGlobal {
+public interface TextureGlobal <: TexDraw {
 	static func unload(Texture: Texture): Unit {
 		unsafe { UnloadTexture(Texture) }
 	}
@@ -115,10 +142,10 @@ public interface TextureGlobal {
 public open class TexObject {
 	protected var InternalTexture: Texture = Texture()
 	public open mut prop BaseTexture: Texture {
-		get() { return InternalTexture }
+		get() { return this.InternalTexture }
 
 		set(NewTex) {
-			InternalTexture = NewTex
+			this.InternalTexture = NewTex
 		}
 	}
 
@@ -126,7 +153,10 @@ public open class TexObject {
 		this.InternalTexture = Tex
 	}
 }
-
+/*
+--------------------------
+|-> Use for drawing Sprite Maps to a single tile.
+*/
 public class Canvas <: TexObject {
 	private var InternalCanvas: Rectangle
 	private var CelArray = Array<Rectangle>()
@@ -142,19 +172,23 @@ public class Canvas <: TexObject {
 	public let TexRows: Int64
 
 	public mut prop CanvasPosition: Vector2 {
-		get() { return InternalCanvas.Position }
+		get() { return this.InternalCanvas.Position }
 
 		set(NewPos) {
-			InternalCanvas.Position = NewPos
+			this.InternalCanvas.Position = NewPos
 		}
 	}
 
 	public mut prop CanvasSize: Vector2 {
-		get() { return Vector2(InternalCanvas.width, InternalCanvas.height) }
+		get() { return Vector2(
+			this.InternalCanvas.width,
+			this.InternalCanvas.height
+			)
+		}
 
 		set(NewSize) {
-			InternalCanvas.width = NewSize.x
-			InternalCanvas.height = NewSize.y
+			this.InternalCanvas.width = NewSize.x
+			this.InternalCanvas.height = NewSize.y
 		}
 	}
 
@@ -170,7 +204,7 @@ public class Canvas <: TexObject {
 
 	private var InternalCount: Int64 = 0
 	public mut prop CelCount: Int64 {
-		get() { return InternalCount }
+		get() { return this.InternalCount }
 
 		set(NewAmn) {
 			this.InternalCount = NewAmn
@@ -181,6 +215,12 @@ public class Canvas <: TexObject {
 	private var CurrentColumn: Float32 = 0.0
 	private var CurrentRow: Float32 = 0.0
 	private var CurrentCel: Int64 = 0
+	/*
+	--------------------------
+	|-> Rebuilds the canvas cels to fit new parameters.
+	|-> Automatically calls when CelCount & TexScale are altered.
+	|-> Resets Canvas index to 0.
+	*/
 	public func regenerateCels(): Unit {
 		this.CurrentCel = 0
 		this.CelArray = Array<Rectangle>(this.InternalCount+1, { Index: Int64 =>
@@ -204,7 +244,10 @@ public class Canvas <: TexObject {
 			}
 		})
 	}
-
+	/*
+	--------------------------
+	|-> Moves to the next tile.
+	*/
 	public func traverse(): Unit {
 		this.InternalSkip++
 		if (this.FrameSkip > this.InternalSkip) {
@@ -219,7 +262,10 @@ public class Canvas <: TexObject {
 		}
 		this.draw()
 	}
-
+	/*
+	--------------------------
+	|-> Moves to the last tile.
+	*/
 	public func reverse(): Unit {
 		this.InternalSkip++
 		if (this.FrameSkip > this.InternalSkip) {
@@ -235,7 +281,10 @@ public class Canvas <: TexObject {
 		this.draw()
 	}
 
-
+	/*
+	--------------------------
+	|-> Draws the current tile to the Canvas.
+	*/
 	public func draw(): Unit {
 		unsafe { DrawTexturePro(
 			this.InternalTexture,
