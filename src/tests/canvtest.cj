@@ -1,14 +1,12 @@
 package raylib.tests
 
-import raylib.system.{KeyInput, IntVector2, Scheduler, Window, Camera2D, Render2D, Rectangle, Color, Keyboard, Vector2, Canvas, TextureGlobal}
+import raylib.system.{ShaderGlobal, ShaderEdit, KeyInput, ShaderLocationIndex, IntVector2, Scheduler, Window, Camera2D, Render2D, Rectangle, Color, Keyboard, Vector2, TextureGlobal}
+import raylib.system.collection.Canvas
+import raylib.system.collection.CanvasGroup
 
-public func start(): Unit {
-    let WINDOWSIZE = IntVector2(500, 500) ; let Camera = Camera2D()
-
-    Window.open(WINDOWSIZE, "Hi")
-    Window.monitor = 0
-
+public func canvas(Camera: Camera2D): Unit {
     let Tex = TextureGlobal.getTexture(unsafe { LibC.mallocCString("./src/textures/quail.bmp") })
+    let Frag = ShaderGlobal.getFragShader(FragmentFilePath: "./src/textures/dis.fs")
 
     let NewCanvas = Canvas(
         Tex: Tex,
@@ -20,9 +18,14 @@ public func start(): Unit {
         Scale: Vector2(112.0, 112.0)
     )
 
+    let NewGroup = CanvasGroup()
+    NewGroup.add(NewCanvas)
+
+    NewCanvas.setDrawCB({ _:Int64 => NewCanvas.next() })
+
     Render2D.bindTo(
         SchedulerState: 1,
-        OnState: { _: Float32 => NewCanvas.traverse() }
+        OnState: NewGroup.draw
     )
 
     let KeyW = KeyInput(

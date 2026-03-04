@@ -25,7 +25,11 @@ foreign {
 	func UnloadFileText(text: CString): Unit
 	func SaveFileText(fileName: CString, text: CString): Bool
 }
-//Raylibs LoadShader function can take a null param when not loading one shader type, so this is passed internally
+
+/*
+--------------------
+| Probably not necessary but Raylib's LoadShader function takes optional null params, so this is the easiest way to get one.
+*/
 private let EMPTY = unsafe { {=>
 	var newnull = LibC.mallocCString("")
 	LibC.free(newnull)
@@ -35,6 +39,22 @@ private let EMPTY = unsafe { {=>
 private let READCACHE = HashMap<String, CString>()
 
 public interface ShaderEdit {
+	static func setValue(Shader: Shader, LOC: Int32, Value: CPointer<Unit>, Uniform: Int32): Unit {
+		unsafe { SetShaderValue(Shader, LOC, Value, Uniform) }
+	}
+
+	static func setValue(Shader: Shader, LOC: Int32, Value: CPointer<Unit>, Uniform: Int32, Count: Int32): Unit {
+		unsafe { SetShaderValueV(Shader, LOC, Value, Uniform, Count) }
+	}
+
+	static func setValue(Shader: Shader, LOC: Int32, Matrix: Matrix): Unit {
+		unsafe { SetShaderValueMatrix(Shader, LOC, Matrix) }
+	}
+
+	static func setValue(Shader: Shader, LOC: Int32, Texture: Texture): Unit {
+		unsafe { SetShaderValueTexture(Shader, LOC, Texture) }
+	}
+
 	static func getLocation(Shader: Shader, Uniform: CString): Int32 {
 		return unsafe { GetShaderLocation(Shader, Uniform) }
 	}
@@ -75,42 +95,36 @@ public interface ShaderGlobal {
 	}
 
 	static func getShader(VertexFilePath!: String, FragmentFilePath!: String): Shader {
-		let vs = File(VertexFilePath, Read)
-		let fs = File(FragmentFilePath, Read)
-
-		let VertText = vs.read(Array<UInt8>(vs.length + 10, repeat: 0)).toString()
-		let FragText = fs.read(Array<UInt8>(fs.length + 10, repeat: 0)).toString()
+		let VertText = unsafe { LoadFileText( LibC.mallocCString(VertexFilePath) ) }
+		let FragText = unsafe { LoadFileText( LibC.mallocCString(FragmentFilePath) ) }
 
 		return unsafe {
 			LoadShaderFromMemory(
-				LibC.mallocCString(VertText),
-				LibC.mallocCString(FragText)
+				VertText,
+				FragText
 			)
 		}
 	}
 
 	static func getVertShader(VertexFilePath!: String): Shader {
-		let vs = File(VertexFilePath, Read)
 
-		let VertText = vs.read(Array<UInt8>(vs.length + 10, repeat: 0)).toString()
+		let VertText = unsafe { LoadFileText( LibC.mallocCString(VertexFilePath) ) }
 
 		return unsafe {
 			LoadShaderFromMemory(
-				LibC.mallocCString(VertText),
+				VertText,
 				EMPTY
 			)
 		}
 	}
 
 	static func getFragShader(FragmentFilePath!: String): Shader {
-		let fs = File(FragmentFilePath, Read)
-
-		let FragText = fs.read(Array<UInt8>(fs.length + 10, repeat: 0)).toString()
+		let FragText = unsafe { LoadFileText( LibC.mallocCString(FragmentFilePath) ) }
 
 		return unsafe {
 			LoadShaderFromMemory(
 				EMPTY,
-				LibC.mallocCString(FragText)
+				FragText
 			)
 		}
 	}
