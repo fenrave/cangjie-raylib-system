@@ -5,6 +5,7 @@ import std.collection.ArrayList
 
 public class CanvasGroup {
     private var Canvases = ArrayList<Canvas>()
+    private var ReferenceCounter: Int64 = 0
     private var InternalSpace = Rectangle(0.0, 0.0, 0.0, 0.0)
 
     private var DrawCB: (DT: Float32) -> Unit = { _: Float32 => }
@@ -19,8 +20,15 @@ public class CanvasGroup {
         }
     }
 
-    public func add(Target: Canvas): Unit {
+    public func remove(Target: Int64): Unit {
+        this.Canvases.remove(at: Target)
+    }
+
+    public func add(Target: Canvas): Int64 {
+        this.ReferenceCounter++
         this.Canvases.add(Target)
+        
+        return this.ReferenceCounter
     }
 
     public init(
