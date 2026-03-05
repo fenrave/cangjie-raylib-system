@@ -3,8 +3,7 @@ package raylib.system
 import std.fs.{File, OpenMode}
 import std.collection.HashMap
 
-
-foreign {
+@FastNative foreign {
 	func LoadShader(vsFileName: CString, fsFileName: CString): Shader
 	func LoadShaderFromMemory(vsCode: CString, fsCode: CString): Shader
 

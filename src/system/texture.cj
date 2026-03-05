@@ -1,6 +1,6 @@
 package raylib.system
 
-foreign {
+@FastNative foreign {
     func SetShapesTexture(texture: Texture, source: Rectangle): Unit
     func GetShapesTexture(): Texture
     func GetShapesTextureRectangle(): Rectangle

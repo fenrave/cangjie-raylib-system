@@ -3,7 +3,7 @@ package raylib.system
 // import raylib.system.{Image, Vector2, IntVector2, ConfigFlags}
 import std.collection.{ArrayList}
 
-foreign {
+@FastNative foreign {
     func InitWindow(width: Int32, height: Int32, title: CString): Unit
     func CloseWindow(): Unit
     func WindowShouldClose(): Bool

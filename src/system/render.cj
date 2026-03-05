@@ -2,7 +2,8 @@ package raylib.system
 
 import std.collection.ArrayList
 import std.core.Exception
-foreign {
+
+@FastNative foreign {
     func ClearBackground(color: Color): Unit
     func BeginDrawing(): Unit
     func EndDrawing(): Unit
@@ -78,10 +79,9 @@ foreign {
 
 }
 
-
 private class InvalidSchedulerStateException <: Exception {
     public init() {
-        super("Invalid State")
+        super("Invalid State!")
     }
 
     public init(Message: String) {

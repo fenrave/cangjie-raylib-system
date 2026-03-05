@@ -3,7 +3,7 @@ package raylib.system
 // import raylib.system.{Vector2, IntVector2}
 import std.collection.ArrayList
 
-foreign {
+@FastNative foreign {
 	func IsKeyPressed(key: Int32): Bool
 	func IsKeyPressedRepeat(key: Int32): Bool
 	func IsKeyDown(key: Int32): Bool
