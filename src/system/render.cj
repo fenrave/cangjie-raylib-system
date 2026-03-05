@@ -1,9 +1,7 @@
 package raylib.system
 
-// import raylib.system.{Color, Camera2D, RenderTexture, Camera3D, Shader, VrStereoConfig, Vector2, Matrix, Ray, Texture, VrDeviceInfo, Vector3}
 import std.collection.ArrayList
-
-
+import std.core.Exception
 foreign {
     func ClearBackground(color: Color): Unit
     func BeginDrawing(): Unit
@@ -80,6 +78,26 @@ foreign {
 
 }
 
+
+private class InvalidSchedulerStateException <: Exception {
+    public init() {
+        super("Invalid State")
+    }
+
+    public init(Message: String) {
+        super(Message)
+    }
+
+    protected override func getClassName(): String {
+        return "InvalidSchedulerStateException"
+    }
+}
+
+//@throws InvalidSchedulerStateException when an invalid SchedulerState is passed
+private func throwInvalidSchedulerState(Message: String): Unit {
+    throw InvalidSchedulerStateException(Message)
+}
+
 private type Callback = (DT: Float32) -> Unit
 
 public interface Draw2D {
@@ -137,7 +155,7 @@ public class Render2D {
             case 0 => PRERENDER.add(OnState)
             case 1 => WHILERENDER.add(OnState)
             case 2 => POSTRENDER.add(OnState)
-            case _ => throw Exception("${SchedulerState} is not a valid state")
+            case _ => throwInvalidSchedulerState("${SchedulerState} is not a valid state")
         }
     }
 
@@ -176,7 +194,7 @@ public class Render3D {
             case 0 => PRERENDER.add(OnState)
             case 1 => WHILERENDER.add(OnState)
             case 2 => POSTRENDER.add(OnState)
-            case _ => throw Exception("${SchedulerState} is not a valid state")
+            case _ => throwInvalidSchedulerState("${SchedulerState} is not a valid state")
         }
     }
 
@@ -202,6 +220,23 @@ public class RenderGlobal {
 }
 
 public class Scheduler {
+    private static let PREDRAW = ArrayList<Callback>()
+    private static let WHILEDRAW = ArrayList<Callback>()
+
+    /*
+    -V----------------V-
+    |0 ->     preDraw
+    |1 ->     whileDraw
+    --------------------
+    */
+    public static func bindTo(SchedulerState!: Int32 = 1, OnState!: Callback): Unit {
+        match (SchedulerState) {
+            case 0 => PREDRAW.add(OnState)
+            case 1 => WHILEDRAW.add(OnState)
+            case _ => throwInvalidSchedulerState("${SchedulerState} is not a valid state")
+        }
+    }
+
     public mut static prop frameRate: Int32 {
         get() { return unsafe { GetFPS() } }
 
