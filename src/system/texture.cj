@@ -31,7 +31,7 @@ package raylib.system
     func GenTextureMipmaps(texture: CPointer<Texture>): Unit
     func SetTextureFilter(texture: Texture, filter: Int32): Unit
     func SetTextureWrap(texture: Texture, wrap: Int32): Unit
-
+    //cjlint-ignore -start !G.FUN.01
     func DrawTexture(texture: Texture, posX: Int32, posY: Int32, tint: Color): Unit
     func DrawTextureV(texture: Texture, position: Vector2, tint: Color): Unit
     func DrawTextureEx(texture: Texture, position: Vector2, rotation: Float32, scale: Float32, tint: Color): Unit
@@ -66,7 +66,7 @@ protected interface TexDraw {
         unsafe { DrawTextureNPatch(Target, NPatch, Dest, Origin, Rotation, Tint) }
     }
 }
-
+    //cjlint-ignore -end
 public interface ImageGlobal {
     static func unload(Image: Image): Unit {
         unsafe { UnloadImage(Image) }

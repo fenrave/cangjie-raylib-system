@@ -37,7 +37,7 @@ import std.core.Exception
     // func GetFrameTime(): Float32
     func GetTime(): Float64
     func GetFPS(): Int32
-
+    //cjlint-ignore -start !G.FUN.01
     func DrawPixel(posX: Int32, posY: Int32, color: Color): Unit
     func DrawPixelV(position: Vector2, color: Color): Unit
     func DrawLine(startPosX: Int32, startPosY: Int32, endPosX: Int32, endPosY: Int32, color: Color): Unit
@@ -76,7 +76,7 @@ import std.core.Exception
     func DrawPoly(center: Vector2, sides: Int32, radius: Float32, rotation: Float32, color: Color): Unit
     func DrawPolyLines(center: Vector2, sides: Int32, radius: Float32, rotation: Float32, color: Color): Unit
     func DrawPolyLinesEx(center: Vector2, sides: Int32, radius: Float32, rotation: Float32, lineThick: Float32, color: Color): Unit
-
+    //cjlint-ignore -end
 }
 
 private class InvalidSchedulerStateException <: Exception {

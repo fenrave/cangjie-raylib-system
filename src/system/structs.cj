@@ -72,7 +72,7 @@ package raylib.system
             this.y + Target.y
         )
     }
-
+    //cjlint-ignore -start !G.OPR.01
     public operator func *(Target: Vector2): Vector2 {
         return Vector2(
             this.x * Target.x,
@@ -121,7 +121,7 @@ package raylib.system
             y * Target.y,
         )
     }
-
+    //cjlint-ignore -end
     public operator func /(Target: Vector3): Vector3 {
         return Vector3(
             z / Target.z,
