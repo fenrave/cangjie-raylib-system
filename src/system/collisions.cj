@@ -60,7 +60,7 @@ public interface Collision2D {
         return unsafe { CheckCollisionLines(SP1, EP1, SP2, EP2, CollisionPoint) }
     }
 
-    static func get(R1: Rectangle, R2: Rectangle): Rectangle {
+    static func getCollisionRec(R1: Rectangle, R2: Rectangle): Rectangle {
         return unsafe { GetCollisionRec(R1, R2) }
     }
 }
